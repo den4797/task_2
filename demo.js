@@ -1,265 +1,265 @@
-var myList = document.getElementById("list");
-var doneList = document.getElementById("donelist");
+const myList = document.getElementById("list");
+const doneList = document.getElementById("donelist");
 
-var todo = [];
-var todone = [];
+let todo = [];
+let toDone = [];
 
+let temp;
+let count = 0, countDone = 0, x = 0, y = 0;
+let flag = "";
 
-var temp;
-var count = 0, countDone = 0, x = 0, y = 0;
-var flag = true;
-
-function save_count() {
-    var localCount = count;
-    var localCountDone = countDone;
-    localStorage.setItem("count", localCount);
-    localStorage.setItem("countDone", localCountDone);
+function saveCount() {
+  let localCount = count;
+  let localCountDone = countDone;
+  localStorage.setItem("count", localCount);
+  localStorage.setItem("countDone", localCountDone);
 }
 
-function get_count() {
-    var localCount = localStorage.getItem("count");
-    var localCountDone = localStorage.getItem("countDone");
-    count = localCount;
-    countDone = localCountDone;
+function getCount() {
+  let localCount = localStorage.getItem("count");
+  let localCountDone = localStorage.getItem("countDone");
+  count = localCount;
+  countDone = localCountDone;
 }
 
+function saveList() {
+  let str = JSON.stringify(todo);
+  let str1 = JSON.stringify(toDone);
+  localStorage.setItem("todo", str);
+  localStorage.setItem("toDone", str1);
+}
 
-function save_list() {
-    var str = JSON.stringify(todo);
-    var str1 = JSON.stringify(todone);
-    localStorage.setItem("todo", str);
-    localStorage.setItem("todone", str1);
+function removeList(id) {
+  const root = document.getElementById(id);
+
+  while (root.firstChild) {
+    root.removeChild(document.getElementById(id).firstChild);
+  }
+
+  if (myList.id === id) {
+    todo = [];
+    count = 0;
+  } else {
+    toDone = [];
+    countDone = 0;
+  }
+
+  saveList();
+  saveCount();
+  displayTitle();
+}
+
+function displayTitle() {
+  if (count === 0) {
+    document.getElementById("noitem").style.display = "block";
+  }
+  if (count === 1) {
+    document.getElementById("noitem").style.display = "none";
+  }
+  if (countDone === 0) {
+    document.getElementById("doneitem").style.display = "block";
+  }
+  if (countDone === 1) {
+    document.getElementById("doneitem").style.display = "none";
+  }
 
 }
 
-function get_list() {
-    var str = localStorage.getItem("todo");
-    var str1 = localStorage.getItem("todone");
+function getList() {
+  let str = localStorage.getItem("todo");
+  let str1 = localStorage.getItem("toDone");
 
-    todo = JSON.parse(str);
-    todone = JSON.parse(str1);
-    if (!todo) {
-        todo = [];
-    }
-    if (!todone) {
-        todone = [];
-    }
+  todo = JSON.parse(str);
+  toDone = JSON.parse(str1);
 
-    console.log(todo);
-    console.log(todone);
-
+  if (!todo) {
+    todo = [];
+  }
+  if (!toDone) {
+    toDone = [];
+  }
 }
-get_count();
-get_list();
-var todoCount = count;
-var todoneCount = countDone;
+
+getCount();
+getList();
+
+let todoCount = count;
+let toDoneCount = countDone;
 
 while (todoCount > 0) {
-    additem_todo('todo');
-    --todoCount;
+  addItemTodo('todo');
+  --todoCount;
 }
 
-while (todoneCount > 0) {
-    additem_todo('todone');
-    --todoneCount;
+while (toDoneCount > 0) {
+  addItemTodo('toDone');
+  --toDoneCount;
 }
 
-function additem_whenenter(e) {
-    if (e.keyCode === 13) {
-        additem_todo('new');
-    }
+function addItemWhenenter(e) {
+  e.keyCode === 13 &&
+    addItemTodo('new');
 }
 
-function additem_todo(flag) {
-    var item = document.createElement("li");
-    var span = document.createElement("span");
-    var check = document.createElement("input");
-    var spanimg = document.createElement("span");
-    item.appendChild(check);
+function addItemTodo(flag) {
+  const item = document.createElement("li");
+  const span = document.createElement("span");
+  const check = document.createElement("input");
+  const spanImg = document.createElement("span");
 
-    item.appendChild(spanimg);
-    item.appendChild(span);
+  item.appendChild(check);
+  item.appendChild(spanImg);
+  item.appendChild(span);
 
-    check.setAttribute('type', 'checkbox');
-    check.classList.add("check-item");
-    span.classList.add("list-item");
-    spanimg.classList.add("glyphicon");
-    spanimg.classList.add("glyphicon-remove");
+  check.setAttribute('type', 'checkbox');
 
-    if (flag == 'todo') {
-        var itemContent = todo[x];
-        span.innerHTML = itemContent;
-        myList.appendChild(item);
-        x++;
-        document.getElementById("noitem").style.display = "none";
+  check.classList.add("check-item");
+  span.classList.add("list-item");
+  spanImg.classList.add("glyphicon");
+  spanImg.classList.add("glyphicon-remove");
 
-
+  switch (flag) {
+    case "todo": {
+      span.innerHTML = todo[x];
+      myList.appendChild(item);
+      x++;
+      document.getElementById("noitem").style.display = "none";
+      break
     }
-    else if (flag == 'todone') {
-        check.checked = true;
-        var itemContent = todone[y];
-        span.innerHTML = itemContent;
-        doneList.appendChild(item);
-        y++;
-        document.getElementById("doneitem").style.display = "none";
-
-
+    case "toDone": {
+      check.checked = true;
+      span.innerHTML = toDone[y];
+      doneList.appendChild(item);
+      y++;
+      document.getElementById("doneitem").style.display = "none";
+      break
     }
-    else {
-        var itemContent = document.getElementById("itemname");
-        todo.push(itemContent.value);
-        save_list();
-        span.innerHTML = itemContent.value;
-        myList.appendChild(item);
-        itemContent.value = "";
-        count++;
-        save_count();
-        display_title();
+    default: {
+      const itemContent = document.getElementById("itemname");
+
+      todo.push(itemContent.value);
+
+      saveList();
+
+      span.innerHTML = itemContent.value;
+      myList.appendChild(item);
+      itemContent.value = "";
+      count++;
+
+      saveCount();
+      displayTitle();
     }
+  }
 
 
-    check.addEventListener("change", function () {
+  check.addEventListener("change", function () {
+    const doneItem = this.parentElement;
 
-        var doneItem = this.parentElement;
-        temp = doneItem.childNodes[2].innerHTML;
-        if (myList.id == this.parentElement.parentElement.id) {
-            myList.removeChild(doneItem);
-            span.innerHTML = temp;
-            doneList.appendChild(item);
-            count--;
-            countDone++;
-            todone.push(temp);
-            for (var i = 0; i < todo.length; i++) {
-                if (temp == todo[i])
-                    todo.splice(i, 1);
-            }
-        }
-        else {
-            doneList.removeChild(doneItem);
-            span.innerHTML = temp;
-            myList.appendChild(item);
-            count++;
-            countDone--;
-            todo.push(temp);
-            for (var i = 0; i < todone.length; i++) {
-                if (temp == todone[i])
-                    todone.splice(i, 1);
-            }
-        }
-        save_list();
-        save_count();
-        display_title();
+    temp = doneItem.childNodes[2].innerHTML;
 
-        spanimg.addEventListener("click", function () {
+    if (myList.id === this.parentElement.parentElement.id) {
+      myList.removeChild(doneItem);
+      span.innerHTML = temp;
+      doneList.appendChild(item);
+      count--;
+      countDone++;
+      toDone.push(temp);
 
-            var removeItem = this.parentElement;
-            temp = removeItem.childNodes[2].innerHTML;
+      for (let i = 0; i < todo.length; i++) {
+        temp === todo[i] &&
+          todo.splice(i, 1);
+      }
+    } else {
+      doneList.removeChild(doneItem);
+      span.innerHTML = temp;
+      myList.appendChild(item);
+      count++;
+      countDone--;
+      todo.push(temp);
 
-            if (myList.id == this.parentElement.parentElement.id) {
-                myList.removeChild(removeItem);
-                count--;
-                for (var i = 0; i < todo.length; i++) {
-                    if (temp == todo[i])
-                        todo.splice(i, 1);
-                }
-
-            }
-            else {
-                doneList.removeChild(removeItem);
-                countDone--;
-                for (var i = 0; i < todone.length; i++) {
-                    if (temp = todone[i])
-                        todone.splice(i, 1);
-                }
-            }
-            save_list();
-            save_count();
-            display_title();
-
-        });
-
-        span.addEventListener("dblclick", function () {
-
-            var data = this.innerHTML;
-            var parent = this.parentElement;
-            span.innerHTML = "";
-            var form = document.createElement("span");
-            var text = document.createElement("input");
-            var ok = document.createElement("button");
-            var cancel = document.createElement("button");
-
-            text.value = data;
-            ok.innerHTML = "OK";
-            cancel.innerHTML = "Cancel";
-
-            form.appendChild(text);
-            form.appendChild(ok);
-            form.appendChild(cancel);
-            span.appendChild(form);
-
-            ok.addEventListener("click", function () {
-                span.removeChild(form);
-
-                for (var i = 0; i < todo.length; i++) {
-                    if (data == todo[i]) {
-                        todo[i] = text.value;
-                    }
-
-                }
-
-                for (var i = 0; i < todone.length; i++) {
-                    if (data == todone[i]) {
-                        todone[i] = text.value;
-                    }
-                }
-                save_list();
-                data = text.value;
-                span.innerHTML = data;
-                parent.appendChild(span);
-            });
-
-            cancel.addEventListener("click", function () {
-                span.removeChild(form);
-                span.innerHTML = data;
-                parent.appendChild(span);
-            });
-        });
+      for (let i = 0; i < toDone.length; i++) {
+        temp === toDone[i] &&
+        toDone.splice(i, 1);
+      }
     }
 
-    function display_title() {
+    saveList();
+    saveCount();
+    displayTitle();
+  })
 
-        if (count == 0) {
-            document.getElementById("noitem").style.display = "block";
-        }
-        if (count == 1) {
-            document.getElementById("noitem").style.display = "none";
-        }
-        if (countDone == 0) {
-            document.getElementById("doneitem").style.display = "block";
-        }
-        if (countDone == 1) {
-            document.getElementById("doneitem").style.display = "none";
-        }
+  span.addEventListener("dblclick", function () {
+    let data = this.innerHTML;
+    const parent = this.parentElement;
 
+    span.innerHTML = "";
+
+    const form = document.createElement("span");
+    const text = document.createElement("input");
+    const ok = document.createElement("button");
+    const cancel = document.createElement("button");
+
+    text.value = data;
+    ok.innerHTML = "OK";
+    cancel.innerHTML = "Cancel";
+
+    form.appendChild(text);
+    form.appendChild(ok);
+    form.appendChild(cancel);
+    span.appendChild(form);
+
+    ok.addEventListener("click", function () {
+      span.removeChild(form);
+
+      for (let i = 0; i < todo.length; i++) {
+        if (data === todo[i]) {
+          todo[i] = text.value;
+        }
+      }
+      for (let i = 0; i < toDone.length; i++) {
+        if (data === toDone[i]) {
+          toDone[i] = text.value;
+        }
+      }
+
+      saveList();
+
+      data = text.value;
+      span.innerHTML = data;
+      parent.appendChild(span);
+    });
+
+    cancel.addEventListener("click", function () {
+      span.removeChild(form);
+      span.innerHTML = data;
+      parent.appendChild(span);
+    });
+  });
+
+  spanImg.addEventListener("click", function () {
+    const removeItem = this.parentElement;
+
+    temp = removeItem.childNodes[2].innerHTML;
+
+    if (myList.id === this.parentElement.parentElement.id) {
+      myList.removeChild(removeItem);
+      count--;
+
+      for (let i = 0; i < todo.length; i++) {
+        if (temp === todo[i])
+          todo.splice(i, 1);
+      }
+    } else {
+      doneList.removeChild(removeItem);
+      countDone--;
+
+      for (let i = 0; i < toDone.length; i++) {
+        if (temp === toDone[i])
+          toDone.splice(i, 1);
+      }
     }
-    function remove_list(id) {
-        var root = document.getElementById(id);
-        while (root.firstChild) {
-            root.removeChild(document.getElementById(id).firstChild);
-
-        }
-
-
-        if (myList.id == id) {
-            todo = [];
-            count = 0;
-        }
-        else {
-            todone = [];
-            countDone = 0;
-        }
-        save_list();
-        save_count();
-        display_title();
-
-    }
+    saveList();
+    saveCount();
+    displayTitle();
+  });
+}

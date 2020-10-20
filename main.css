@@ -1,30 +1,29 @@
-body{
-	background: #9fe29f;
+body {
+    background: #9fe29f;
 }
 
-
-ul{
-	margin-top: 50px;
-	font-size: 20px;
-	list-style: none;
-	padding-left: 0px;
+ul {
+    margin-top: 50px;
+    font-size: 20px;
+    list-style: none;
+    padding-left: 0px;
 }
 
-ul li{
-	width: 80%;
+ul li {
+    width: 80%;
 }
 
-.glyphicon-remove{
-	float: right;
-	color: #b31a1a;
+.glyphicon-remove {
+    float: right;
+    color: #b31a1a;
 }
 
-.list-item{
-	padding-left: 20px;
+.list-item {
+    padding-left: 20px;
 }
 
-#itemname{
-	background: #f9f6ea;
+#itemname {
+    background: #f9f6ea;
     margin-top: 20px;
     margin-bottom: 20px;
     display: block;
@@ -36,82 +35,71 @@ ul li{
 #itemname:focus {
     outline: none !important;
 }
-.glyphicon-trash{
-	padding-top: 5px;
+
+.glyphicon-trash {
+    padding-top: 5px;
 }
 
-#list li{
-background: #fff3c1; 
-     padding: 0.2% 1%; 
+#list li {
+    background: #fff3c1;
+    padding: 0.2% 1%;
 }
 
-#donelist li{
-background: #cdfdcd; 
-     padding: 0.2% 1%; 
+#donelist li {
+    background: #cdfdcd;
+    padding: 0.2% 1%;
 }
 
-.todolist{
-        padding: 1% 20%;
+.todolist {
+    padding: 1% 20%;
     background: #f7e8ac;
 }
 
-.donelist{
-        padding: 1% 20%;
+.donelist {
+    padding: 1% 20%;
     background: #9fe29f;
 }
 
-.container-fluid{
-	padding-right: 0px; 
-     padding-left: 0px; 
-	
+.container-fluid {
+    padding-right: 0px;
+    padding-left: 0px;
 }
 
-hr{
-	border-color: #000;
+hr {
+    border-color: #000;
 }
 
 
 @media only screen and (max-width: 950px) {
-
-.todolist{
+    .todolist {
         padding: 2% 10%;
-    background: #f7e8ac;
-}
+        background: #f7e8ac;
+    }
 
-.donelist{
+    .donelist {
         padding: 2% 10%;
-    background: #9fe29f;
+        background: #9fe29f;
+    }
 }
 
-
-}
 @media only screen and (max-width: 742px) {
-
-
-.todolist{
+    .todolist {
         padding: 3% 5%;
-    background: #f7e8ac;
-}
+        background: #f7e8ac;
+    }
 
-.donelist{
+    .donelist {
         padding: 3% 5%;
-    background: #9fe29f;
-}
-	
-#itemname{
-	
-	width: 60%;
-	
-}
+        background: #9fe29f;
+    }
 
-	}
+    #itemname {
+        width: 60%;
+    }
+}
 
 @media only screen and (max-width: 480px) {
-	
-#itemname{
-	
-	width: 80%;
-	
+    #itemname {
+        width: 80%;
+    }
 }
-
-	}
